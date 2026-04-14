@@ -160,11 +160,14 @@ fig.update_yaxes(showgrid=True, gridcolor="rgba(0,0,0,0.05)", zeroline=False)
 # ----------------------------
 # Render plot with click
 # ----------------------------
-selected = st.plotly_chart(
+st.plotly_chart(
     fig,
     key="disease_scatter",
     on_select="rerun"
 )
+
+selected = st.session_state.get("disease_scatter")
+
 
 # ----------------------------
 # Sidebar
