@@ -18,9 +18,16 @@ info_file = "disease_info.csv"
 # ----------------------------
 # Show last update
 # ----------------------------
-mod_time = os.path.getmtime(main_file)
-last_update = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d %H:%M:%S')
-st.write(f"**Data last updated:** {last_update}")
+#mod_time = os.path.getmtime(main_file)
+#last_update = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d %H:%M:%S')
+#st.write(f"**Data last updated:** {last_update}")
+if os.path.exists(main_file):
+    mod_time = os.path.getmtime(main_file)
+    last_update = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d %H:%M:%S')
+    st.write(f"**Data last updated:** {last_update}")
+else:
+    st.warning("Data file not found.")
+
 
 # ----------------------------
 # Load data
