@@ -33,7 +33,8 @@ else:
 # Load data
 # ----------------------------
 main_data = pd.read_csv(main_file)
-info_data = pd.read_csv(info_file)
+#info_data = pd.read_csv(info_file)
+info_data = pd.read_csv(info_file, encoding='latin1')
 diseases = pd.read_csv("table_diseases.csv")
 
 #data = data.loc[:, ~data.columns.str.contains("^Unnamed")]
@@ -83,24 +84,6 @@ species_icons = {
 
 data_renamed["Species Icon"] = data_renamed["Species"].map(species_icons).fillna("🐾")
 
-# ----------------------------
-# Table display
-# ----------------------------
-st.write("### Disease Data Table")
-st.dataframe(diseases[["Species", "Disease"]])
-
-# ----------------------------
-# Species Filter
-# ----------------------------
-species_list = sorted(data_renamed["Species"].dropna().unique())
-
-selected_species = st.multiselect(
-    "Filter by Species",
-    species_list,
-    default=species_list
-)
-
-filtered_data = data_renamed[data_renamed["Species"].isin(selected_species)]
 
 # ----------------------------
 # Plot styling
@@ -122,8 +105,23 @@ marker_shapes = {
 }
 
 # ----------------------------
+# Species Filter
+# ----------------------------
+species_list = sorted(data_renamed["Species"].dropna().unique())
+
+selected_species = st.multiselect(
+    "Filter by Species",
+    species_list,
+    default=species_list
+)
+
+filtered_data = data_renamed[data_renamed["Species"].isin(selected_species)]
+
+
+# ----------------------------
 # Plot
 # ----------------------------
+st.write("This chart classifies a list of exotic diseases into risk of incursion categories and shows the impact these diseases would have in the Scottish livestock if they were to be introduced into Scotland. Click on the data points for more information. ")
 fig = px.scatter(
     filtered_data,
     x="Risk",
@@ -269,3 +267,11 @@ else:
             f'<a href="{mapurl}" target="_blank">🗺 Open Map</a>',
             unsafe_allow_html=True
         )
+
+# ----------------------------
+# Table display
+# ----------------------------
+st.write("### Disease Data Table")
+st.write("Below is the list of exotic diseases that are threatening livestock in Scotland")
+st.dataframe(diseases[["Species", "Disease"]])
+
